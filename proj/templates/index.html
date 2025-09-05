@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Video Summarizer & Quiz Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-video"></i> AI Video Summarizer</h1>
+            <p>Transform any YouTube video into summaries and interactive quizzes</p>
+        </header>
+
+        <main class="main-content">
+            <div class="upload-section">
+                <div class="upload-card">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h2>Upload Video</h2>
+                    <p>Enter a YouTube URL to get started</p>
+                    
+                    <form id="videoForm" action="/process" method="POST" class="upload-form">
+                        <div class="input-group">
+                            <input type="url" 
+                                   id="videoUrl" 
+                                   name="video_url" 
+                                   placeholder="https://www.youtube.com/watch?v=..." 
+                                   required
+                                   class="url-input">
+                            <button type="submit" class="submit-btn" id="submitBtn">
+                                <i class="fas fa-play"></i>
+                                <span>Process Video</span>
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="features">
+                        <div class="feature">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Auto Transcription</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-compress-alt"></i>
+                            <span>Smart Summarization</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-question-circle"></i>
+                            <span>Quiz Generation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="loading-section" id="loadingSection" style="display: none;">
+                <div class="loading-card">
+                    <div class="spinner"></div>
+                    <h3>Processing Video...</h3>
+                    <p id="loadingText">Downloading and transcribing video content</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 AI Video Summarizer. Powered by OpenAI Whisper & GPT-4.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

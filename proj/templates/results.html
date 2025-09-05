@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results - AI Video Summarizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-video"></i> AI Video Summarizer</h1>
+            <a href="/" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Process Another Video
+            </a>
+        </header>
+
+        <main class="results-content">
+            <div class="video-info">
+                <h2><i class="fas fa-play-circle"></i> {{ title }}</h2>
+            </div>
+
+            <div class="results-grid">
+                <!-- Summary Section -->
+                <div class="result-card summary-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-file-alt"></i> Summary</h3>
+                        <button class="copy-btn" onclick="copyToClipboard('summary')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <div class="card-content" id="summary">
+                        {{ summary }}
+                    </div>
+                </div>
+
+                <!-- Quiz Section -->
+                <div class="result-card quiz-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-question-circle"></i> Interactive Quiz</h3>
+                        <button class="copy-btn" onclick="copyToClipboard('quiz')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <div class="card-content" id="quiz">
+                        {% if quiz %}
+                            <div class="quiz-container">
+                                {% for question in quiz %}
+                                <div class="question-item">
+                                    <h4>Question {{ loop.index }}</h4>
+                                    <p class="question-text">{{ question.question }}</p>
+                                    <div class="options">
+                                        {% for option in question.options %}
+                                        <div class="option">
+                                            <input type="radio" 
+                                                   name="q{{ loop.index0 }}" 
+                                                   id="q{{ loop.index0 }}_{{ loop.index0 }}" 
+                                                   value="{{ loop.index0 }}">
+                                            <label for="q{{ loop.index0 }}_{{ loop.index0 }}">
+                                                {{ option }}
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="answer-reveal" id="answer{{ loop.index0 }}" style="display: none;">
+                                        <p class="correct-answer">
+                                            <i class="fas fa-check-circle"></i>
+                                            Correct Answer: {{ question.options[question.correct_answer] }}
+                                        </p>
+                                    </div>
+                                    <button class="reveal-btn" onclick="revealAnswer({{ loop.index0 }}, {{ question.correct_answer }})">
+                                        Show Answer
+                                    </button>
+                                </div>
+                                {% endfor %}
+                                <button class="check-all-btn" onclick="checkAllAnswers()">
+                                    <i class="fas fa-check-double"></i>
+                                    Check All Answers
+                                </button>
+                            </div>
+                        {% else %}
+                            <p>No quiz questions were generated for this video.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Transcript Section -->
+                <div class="result-card transcript-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-scroll"></i> Full Transcript</h3>
+                        <button class="copy-btn" onclick="copyToClipboard('transcript')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <div class="card-content transcript-content" id="transcript">
+                        {{ transcript }}
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 AI Video Summarizer. Powered by OpenAI Whisper & GPT-4.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
